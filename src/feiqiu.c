@@ -11,7 +11,7 @@
 int new_file_fill_handle(feiqiu **handle, const char *protodata);
 void feiqiu_file_proto_done_callback(feiqiu **handle, char *filename, char *filepath, void *userdata);
 void caught_packet(const struct pcap_pkthdr *cap_header, const u_char *packet, const char **protodata, int *len);
-void dump(const unsigned char *data_buffer, const unsigned int length);
+void dump(const char *data_buffer, const unsigned int length);
 int decode_tcp(const u_char *header_start);
 
 
@@ -77,7 +77,7 @@ feiqiu_file_proto_run(feiqiu **handle, const char *protodata, int len)
 		close((*handle)->fd);
 		(*handle)->file_size = 0;
 		(*handle)->current_state = HEADER;
-		(*handle)->current_hdr_field = 0;
+		(*handle)->current_hdr_field = DATA_HDR_LEN;
 		(*handle)->file_data_already_writen = 0;
 		// file recovery done. callback
 		feiqiu_file_proto_done_callback(handle, (*handle)->filename,
@@ -144,7 +144,11 @@ new_file_fill_handle(feiqiu **handle, const char *protodata)
 				(*handle)->current_state = DATA;
 				return header_len; // finish
 		}
-		(*handle)->current_hdr_field++;
+		// just for g++ compile success.
+		// or you could write
+		// (*handle)->current_hdr_field++.
+		// but g++ is stricter. all these is to use gtest.
+		(*handle)->current_hdr_field = (Pkt_hdr)((*handle)->current_hdr_field + 1);
 		p = strtok(NULL, ":");
 	}
 
@@ -190,7 +194,7 @@ decode_tcp(const u_char *header_start)
 
 
 void
-dump(const unsigned char *data_buffer, const unsigned int length)
+dump(const char *data_buffer, const unsigned int length)
 {
 	unsigned char byte;
 	unsigned int i, j;

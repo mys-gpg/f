@@ -3,6 +3,8 @@
 #ifndef __FEIQIU_H
 #define __FEIQIU_H
 
+#include "feiqiu_types.h"
+
 
 /* feiqiu handle init */
 int
@@ -36,7 +38,7 @@ decode_tcp(const u_char *header_start);
 
 /* dump packet data, for debug */
 void
-dump(const unsigned char *data_buffer, const unsigned int length);
+dump(const char *data_buffer, const unsigned int length);
 
 
 #endif  /* __FEIQIU_H */
