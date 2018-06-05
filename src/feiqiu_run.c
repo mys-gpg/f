@@ -3,9 +3,9 @@
 int
 main(int argc, char const *argv[])
 {
-	const char filter[] = "dst host 192.168.19.49";
+	const char filter[] = "tcp and dst host 192.168.19.49";
 	char errbuf[PCAP_ERRBUF_SIZE];
-	const char *pcap_file = "f.pcap";
+	const char *pcap_file = "win_feiqiu.pcap";
 
 	pcap_t *handle = pcap_open_offline(pcap_file, errbuf);
 	if (!handle) {
